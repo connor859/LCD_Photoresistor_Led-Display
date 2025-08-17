@@ -1,0 +1,53 @@
+#include <LiquidCrystal.h>
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+int sensor;
+int threshold = 20;
+int photo = A0;
+int led = 6;
+int led2 = 7;
+
+void setup() {
+  lcd.begin(20, 4);
+  lcd.print("Hello World");
+  Serial.begin(9600);
+  pinMode(led, OUTPUT);
+  pinMode(led2, OUTPUT);
+}
+
+void loop() {
+  sensor = analogRead(photo);
+ Serial.println(sensor);
+ 
+ lcd.setCursor(0, 0);
+ lcd.print("Photo: ");
+ lcd.print(sensor);
+ lcd.print("   ");
+ 
+ if(sensor < threshold)
+ {
+  lcd.setCursor(0, 1);
+  lcd.print("State: DARK      ");
+ ledDisplay();
+ }
+ else{
+  lcd.setCursor(0, 1);
+  lcd.print("State: BRIGHT    ");
+  digitalWrite(led, LOW);
+  digitalWrite(led2, LOW);
+  delay(50);
+ }
+}
+
+
+void ledDisplay()
+{
+digitalWrite(led, HIGH);
+digitalWrite(led2, LOW);
+delay(500);
+
+digitalWrite(led, LOW);
+digitalWrite(led2, HIGH);
+delay(500);
+ 
+ 
+}
